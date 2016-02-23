@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=2:gpus=1:titan
+#PBS -l walltime=10:00:00
+#PBS -l mem=4GB
+#PBS -N vgg_bn_drop 
+#PBS -M nw932@nyu.edu
+#PBS -j oe
+ 
+module purge
+module load torch/intel/20151009
+RUNDIR=/scratch/nw932/projects/deepLearning/ds-ga-1008-a2
+ 
+cd $RUNDIR
+th train.lua --model vgg_bn_drop -s logs/vgg_bn_drop -b 32
+
