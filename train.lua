@@ -1,6 +1,7 @@
 require 'xlua'
 require 'optim'
 require 'cunn'
+require 'augmentation'
 dofile './provider.lua'
 local c = require 'trepl.colorize'
 
@@ -15,6 +16,7 @@ opt = lapp[[
    --model                    (default vgg_bn_drop)     model name
    --max_epoch                (default 300)           maximum number of iterations
    --backend                  (default nn)            backend
+   --do_augment               (defalut 1)            whether do augmentation
 ]]
 
 print(opt)
@@ -102,7 +104,13 @@ function train()
   for t,v in ipairs(indices) do
     xlua.progress(t, #indices)
 
-    local inputs = provider.trainData.data:index(1,v)
+    local raw_inputs = provider.trainData.data:index(1,v)
+    local inputs
+    if opt.do_augment == 1 then
+        inputs = augments(raw_inputs)
+    else
+        inputs = raw_inputs
+    end
     targets:copy(provider.trainData.labels:index(1,v))
 
     local feval = function(x)
