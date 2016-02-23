@@ -17,7 +17,7 @@ opt = lapp[[
    --max_epoch                (default 300)           maximum number of iterations
    --backend                  (default nn)            backend
    --initial_model	      (default '')           use which pretrained model to initialize
-   --do_augment               (defalut 1)            whether do augmentation
+   --do_augment               (default 1)            whether do augmentation
 ]]
 
 print(opt)
@@ -113,7 +113,7 @@ function train()
     local raw_inputs = provider.trainData.data:index(1,v)
     local inputs
     if opt.do_augment == 1 then
-        inputs = augments(raw_inputs)
+        inputs = augment(raw_inputs)
     else
         inputs = raw_inputs
     end
