@@ -15,6 +15,7 @@ opt = lapp[[
    --model                    (default vgg_bn_drop)     model name
    --max_epoch                (default 300)           maximum number of iterations
    --backend                  (default nn)            backend
+   --initial_model	      (default '')           use which pretrained model to initialize
 ]]
 
 print(opt)
@@ -44,7 +45,12 @@ print(c.blue '==>' ..' configuring model')
 local model = nn.Sequential()
 model:add(nn.BatchFlip():float())
 model:add(nn.Copy('torch.FloatTensor','torch.CudaTensor'):cuda())
-model:add(dofile('models/'..opt.model..'.lua'):cuda())
+if opt.initial_model == '' then
+    model:add(dofile('models/'..opt.model..'.lua'):cuda())
+else
+    initial_model = torch.load(opt.initial_model)
+    model:add(initial_model)
+end
 
 model:get(2).updateGradInput = function(input) return end
 
