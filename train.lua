@@ -16,11 +16,8 @@ opt = lapp[[
    --model                    (default vgg_bn_drop)     model name
    --max_epoch                (default 300)           maximum number of iterations
    --backend                  (default nn)            backend
-<<<<<<< HEAD
    --initial_model	      (default '')           use which pretrained model to initialize
-=======
    --do_augment               (defalut 1)            whether do augmentation
->>>>>>> 759bf1f3fcabdfb391867f9e5ddb6ed4c093337d
 ]]
 
 print(opt)
