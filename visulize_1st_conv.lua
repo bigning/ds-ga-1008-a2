@@ -6,12 +6,12 @@ require 'image'
 model = torch.load('logs/vgg_sample/model_300.net')
 conv_layer = model:get(1)
 
-weights = conv_layer.weights
+weights = conv_layer.weight
 save_img = torch.Tensor(3, 8*3, 8*3)
 index = 1
 for i = 1,8 do
     for j = 1,8 do
-        save_img[{{}, {i, i*3}, {j, j*3}}] = weights[index]
+        save_img[{{}, {i, i*3}, {j, j*3}}] = weights[index]:double()
         index = index + 1
     end
 end
