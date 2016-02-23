@@ -47,6 +47,16 @@ function augment(inputs)
        end
 
        new_inputs[i] = new_img
+
+       compare = torch.Tensor(3, img_size, img_size * 2)
+       compare[{{}, {1, img_size}, {1, img_size}}] = inputs[i]
+       compare[{{}, {1, img_size}, {img_size + 1, img_size * 2}}] = new_img 
+       a = torch.random(4000)
+       if a == 1 then
+           name = string.format('img/%f_%f_%f.png', rnd_r, rnd_pixel_x, rnd_ratio)
+           image.save(name, compare)
+       end
+
     end
     collectgarbage()
     return new_inputs
