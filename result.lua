@@ -35,7 +35,7 @@ test_data.labels:float()
 ----normalize the test data using the same method as what is used to process training data
 local normalization = nn.SpatialContrastiveNormalization(1, image.gaussian1D(7))
 for i = 1, test_data.size() do
-    xlua.process(i, test_data.size())
+    xlua.progress(i, test_data.size())
 
     local rgb = test_data.data[i]
     local yuv = image.rgb2yuv(rgb)
