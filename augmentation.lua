@@ -63,7 +63,7 @@ function augment(inputs)
            minn = compare:min()
            compare = (compare - minn) / (maxx-minn)
            name = string.format('img/a_%f_%f_%f.png', rnd_r[1], rnd_pixel_x[1], rnd_ratio[1])
-           image.save(name, compare)
+           --image.save(name, compare)
        end
 
     end
