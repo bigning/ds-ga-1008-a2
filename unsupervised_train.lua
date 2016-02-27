@@ -128,8 +128,9 @@ function train()
   indices[#indices] = nil
 
   local tic = torch.tic()
+  total_loss = 0.0
   for t,v in ipairs(indices) do
-    xlua.progress(t, #indices)
+    --xlua.progress(t, #indices)
 
     local raw_inputs = provider.trainData.data:index(1,v)
     local inputs
@@ -146,6 +147,7 @@ function train()
       
       local outputs = model:forward(inputs)
       local f = criterion:forward(outputs, targets)
+      total_loss = total_loss + f
       local df_do = criterion:backward(outputs, targets)
       model:backward(inputs, df_do)
         
@@ -157,6 +159,10 @@ function train()
       return f,gradParameters
     end
     optim.sgd(feval, parameters, optimState)
+
+    if (t - 1)%10 == 0 then
+        print(string.format('training %d.%d, avg_loss:%f', epoch, t, total_loss/t))
+    end
   end
 
   confusion:updateValids()
@@ -175,17 +181,23 @@ function val()
   model:evaluate()
   print(c.blue '==>'.." valing")
   local bs = 25
+  index = 0
+  val_loss = 0.0
   for i=1,provider.valData.data:size(1),bs do
     local outputs = model:forward(provider.valData.data:narrow(1,i,bs))
+    local targets = provider.valData.labels:narrow(1, i, bs)
+    val_loss = val_loss + criterion:forward(outputs, targets) 
     --change one-hot label to inde label
     --confusion:batchAdd(outputs, provider.valData.labels:narrow(1,i,bs))
     mini_batch_label = provider.valData.labels:narrow(1, i, bs)
     m,mini_batch_label = mini_batch_label:max(2)
     confusion:batchAdd(outputs, mini_batch_label)
+    index = index + 1
   end
-
+  local avg_loss = val_loss / index
   confusion:updateValids()
   print('val accuracy:', confusion.totalValid * 100)
+  print('val loss: ', avg_loss)
   
   if valLogger then
     paths.mkdir(opt.save)
