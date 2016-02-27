@@ -236,7 +236,7 @@ function val()
   end
 
   -- save model every 50 epochs
-  if epoch % 25 == 0 then
+  if epoch % 5 == 0 then
     local filename = paths.concat(opt.save, ('model_%d.net'):format(epoch))
     print('==> saving model to '..filename)
     torch.save(filename, model:get(3))
