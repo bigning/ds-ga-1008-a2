@@ -53,7 +53,7 @@ else
     initial_model = torch.load(opt.initial_model)
     model:add(initial_model)
 end
-
+model:add(nn.LogSoftMax():cuda())
 model:get(2).updateGradInput = function(input) return end
 
 if opt.backend == 'cudnn' then
