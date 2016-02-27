@@ -185,7 +185,7 @@ function val()
   val_loss = 0.0
   for i=1,provider.valData.data:size(1),bs do
     local outputs = model:forward(provider.valData.data:narrow(1,i,bs))
-    local targets = provider.valData.labels:narrow(1, i, bs)
+    local targets = provider.valData.labels:narrow(1, i, bs):cuda()
     val_loss = val_loss + criterion:forward(outputs, targets) 
     --change one-hot label to inde label
     --confusion:batchAdd(outputs, provider.valData.labels:narrow(1,i,bs))
