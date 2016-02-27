@@ -76,7 +76,7 @@ provider.valData.data = provider.valData.data:float()
 --modify label data of validation set, 3 -> (0,0,1,0,0,0,0,0,0,0)
 val_label = torch.zeros(provider.valData.data:size(1), 10)
 for i = 1, provider.valData.data:size(1) do
-    val_label[i][provider.valData.data[i]] = 1
+    val_label[i][provider.valData.labels[i]] = 1
 end
 val_label_original = provider.valData.labels
 provider.valData.labels = val_label
