@@ -57,7 +57,7 @@ preprocess(val_data.data)
 encoder = nn.Sequential()
 encoder:add(nn.SpatialConvolution(3, 64, 3, 3, 1, 1, 1, 1))
 encoder:add(nn.SpatialBatchNormalization(64, 1e-3))
-encoder:add(nn.Sigmoid())
+encoder:add(nn.Tanh())
 encoder:add(nn.SpatialMaxPooling(4, 4, 4, 4))
 encoder = encoder:cuda()
 
